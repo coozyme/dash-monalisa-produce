@@ -10,8 +10,9 @@ const logger = require('morgan');
 var app = express();
 
 // const authapi = require('./routes/auth.route.js');
-const dashboard = require('./routes/dashboard.js');
 const auth = require('./routes/auth.js');
+const dashboard = require('./routes/dashboard.js');
+const product = require('./routes/product.js');
 // const categoryRouter = require('./src/routes/category.router');
 
 // view engine setup
@@ -27,6 +28,7 @@ app.use(cookieParser());
 
 app.use('/auth', auth);
 app.use('/', dashboard);
+app.use('/products', product);
 // app.use('/dashboard/category', categoryRouter);
 
 
