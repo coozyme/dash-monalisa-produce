@@ -1,0 +1,58 @@
+@startuml
+
+Entity "roles" {
+   id: number [0 | 1 | 2] <<PK>>
+   name: string [master admin | admin | user]
+}
+
+Entity "type_cash_flow" {
+   id: number [1,2] <<PK>>
+   name: string [pemasukan | pengeluaran]
+}
+
+Entity "users" {
+   *uid: string <<generated>> <<PK>>
+   --
+   name: string
+   email: string
+   password: string
+   phone_number: string
+   address: string
+   roles : roles_id
+   created_at: time
+   update_at: time
+} 
+
+
+Entity "events" {
+   id: number
+
+}
+
+Entity "weekly_activities" {
+   id: number
+   activity_name: string
+   
+}
+
+Entity "jumat_schedules" {
+   id: number
+   imam: string
+   muadzin: string
+   time: time
+}
+
+Entity "kas" {
+   id: number
+   name_description: string
+   type: 
+}
+Entity "finansial_statemnt" {
+
+}
+
+roles ||-- users 
+type_cash_flow )|-- kas
+
+
+@enduml
