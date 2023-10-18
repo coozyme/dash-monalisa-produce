@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 const config = require('../config');
 // const basename = path.dirname('/src/models/')
 const basename = path.join(__dirname, 'models')
-const env = process.env.APP_STAGE;
+const env = config.APP_STAGE;
 const config = require(__dirname + '/../src/config/config.js')[env];
 const db = {};
 
@@ -25,11 +25,11 @@ const db = {};
 const databases = Object.keys(config.DATABASES);
 
 //Loop over the array and create a new Sequelize instance for every database from config.js
-for(let i = 0; i < databases.length; ++i) {
-    let database = databases[i];
-    let dbPath = config.DATABASES[database];
-    //Store the database connection in our db object
-    db[database] = new Sequelize( dbPath.DATABASE, dbPath.USERNAME, dbPath.PASSWORD, dbPath );
+for (let i = 0; i < databases.length; ++i) {
+  let database = databases[i];
+  let dbPath = config.DATABASES[database];
+  //Store the database connection in our db object
+  db[database] = new Sequelize(dbPath.DATABASE, dbPath.USERNAME, dbPath.PASSWORD, dbPath);
 }
 
 fs
