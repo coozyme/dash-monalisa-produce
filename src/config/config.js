@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const config = {
    "APP_STAGE": process.env.APP_STAGE,
    "API_KEY": process.env.API_KEY,
@@ -16,6 +18,18 @@ const config = {
          // "HOST": configure.databases.postgresql.host,
          // "DIALECT": configure.databases.postgresql.dialect,
          // "POOL": configure.databases.postgresql.pool
+      },
+      "MYSQL": {
+         "DATABASE": process.env.DB_MYSQL_NAME,
+         "USERNAME": process.env.DB_MYSQL_USERNAME,  //only for testing purposes you can also define the values here
+         "PASSWORD": process.env.DB_MYSQL_PASSWORD,
+         "HOST": process.env.DB_MYSQL_HOST,
+         "PORT": process.env.DB_MYSQL_PORT,
+         "DIALECT": process.env.DB_MYSQL_DIALECT,
+         "MAX": Number(process.env.DB_MYSQL_POOL_MAX),
+         "MIN": Number(process.env.DB_MYSQL_POOL_MIN),
+         "ACUIRE": Number(process.env.DB_MYSQL_POOL_ACUIRE),
+         "IDLE": Number(process.env.DB_MYSQL_POOL_IDLE),
       }
    },
    // "DB_POSTGRES_USERNAME": configure.databases.postgresql.username,

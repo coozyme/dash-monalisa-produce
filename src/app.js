@@ -2,6 +2,7 @@
 const express = require('express');
 // const createError = require('http-errors');
 var path = require('path');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
@@ -9,26 +10,33 @@ const logger = require('morgan');
 
 var app = express();
 
-// const authapi = require('./routes/auth.route.js');
-const auth = require('./routes/auth.js');
-const dashboard = require('./routes/dashboard.js');
-const product = require('./routes/product.js');
-// const categoryRouter = require('./src/routes/category.router');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').renderFile);
-app.use(express.static(path.join(__dirname, '../public/')));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// const authapi = require('./routes/auth.route.js');
+const auth = require('./routes/auth.js');
+const dashboard = require('./routes/dashboard.js');
+const product = require('./routes/product.js');
+const managementRole = require('./routes/management-user.js');
+// const categoryRouter = require('./src/routes/category.router');
+
+// app.use(logger('dev'));
+// app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, '../public/')));
+// app.use(cookieParser());
+
+// app.use('/static', express.static('public'))
+// console.log("LOG-__dirname", __dirname)
+// app.use(express.static(__dirname + '../public/'));
+
 
 app.use('/auth', auth);
 app.use('/', dashboard);
 app.use('/products', product);
+app.use('/management-user', managementRole);
 // app.use('/dashboard/category', categoryRouter);
 
 
