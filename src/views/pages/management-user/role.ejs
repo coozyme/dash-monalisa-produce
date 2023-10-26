@@ -4,84 +4,225 @@
             <div class="container-fluid">
                 <!-- start page title -->
                 <div class="page-title-box">
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-md-8">
                             <h6 class="page-title">Management User Role</h6>
-                            <!-- <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="#">Veltrix</a></li>
-                                <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Basic Tables</li>
-                            </ol> -->
                         </div>
-                        <div class="row mt-5">
-                            <div>
-                                <!-- <a href="#" class="btn btn-primary mb-2">
-                                    <a href="#" class="fas fa-plus-circle" />
-                                    Buat Role
-                                </a> -->
-                                <!-- <a href="/management-user/add-role"> -->
-                                <button class="btn btn-primary  dropdown-toggle mb-2" type="button"
-                                    aria-expanded="false" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
-                                    <i class="fas fa-plus-circle"></i> Buat Role User
-                                </button>
-                                <!-- </a> -->
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">List Role</h4>
-                                        <p class="card-title-desc">For basic styling—light padding and
-                                            only horizontal dividers—add the base class <code>.table</code> to any
-                                            <code>&lt;table&gt;</code>.
-                                        </p>
+                        <!-- Buat Role User -->
+                        <div class="mt-5 d-flex justify-content-between align-items-start">
+                            <div class="row col-lg-6">
+                                <div>
+                                    <button class="btn btn-primary dropdown-toggle mb-2" type="button"
+                                        aria-expanded="false" data-bs-toggle="modal"
+                                        data-bs-target=".modal-create-new-role">
+                                        <i class="fas fa-plus-circle"></i> Buat Role User
+                                    </button>
+                                </div>
+                                <div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">List Role</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-nowrap mb-0 ">
 
-                                        <div class="table-responsive">
-                                            <table class="table mb-0">
-
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th>Username</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
-                                                </tbody>
-                                                <!-- end tbody -->
-                                            </table><!-- end table -->
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Menu Name</th>
+                                                            <th>Publish</th>
+                                                            <th> Action </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Mark</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-role" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-role"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px" class="align-middle">
+                                                                <a class="btn btn-secondary btn-sm edit bg-info"
+                                                                    title="View">
+                                                                    <i class="mdi mdi-eye"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!-- end tbody -->
+                                                </table><!-- end table -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- end col -->
-                        </div>
-                        <!-- end row -->
+                            <div class="row col-lg-6">
+                                <div>
+                                    <button class="btn btn-primary dropdown-toggle mb-2" type="button"
+                                        aria-expanded="false" data-bs-toggle="modal"
+                                        data-bs-target=".modal-create-new-menu-permission">
+                                        <i class="fas fa-plus-circle"></i> Create Access Role User
+                                    </button>
+                                </div>
+                                <div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">List Access Menu</h4>
+                                            <div class="table-responsive">
+                                                <table class="table mb-0">
 
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Access Name</th>
+                                                            <th>Access Key</th>
+                                                            <th>Publish</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Dashboard Analytic Report</td>
+                                                            <td>dashboard_analytic_report</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-menu" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-menu"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px">
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Dashboard Analytic Report</td>
+                                                            <td>dashboard_analytic_report</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-menu" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-menu"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px">
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Dashboard Analytic Report</td>
+                                                            <td>dashboard_analytic_report</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-menu" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-menu"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px">
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Dashboard Analytic Report</td>
+                                                            <td>dashboard_analytic_report</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-menu" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-menu"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px">
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Dashboard Analytic Report</td>
+                                                            <td>dashboard_analytic_report</td>
+                                                            <td>
+                                                                <input class="form-check form-switch" type="checkbox"
+                                                                    id="switch-publish-menu" switch="success" checked>
+                                                                <label class="form-label" for="switch-publish-menu"
+                                                                    data-on-label="Yes" data-off-label="No"></label>
+                                                            </td>
+                                                            <td style="width: 100px">
+                                                                <a class="btn btn-secondary btn-sm edit bg-warning"
+                                                                    title="Edit">
+                                                                    <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <a class="btn btn-secondary btn-sm delete bg-danger"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-delete"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!-- end tbody -->
+                                                </table><!-- end table -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Buat Menu Permission-->
+
+                        <!-- end col -->
                     </div>
                 </div>
                 <!-- end row -->
 
                 <!--  Modal content for Buat Role Baru -->
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                <div class="modal fade modal-create-new-role" tabindex="-1" role="dialog"
                     aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -151,6 +292,44 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
+
+                <!-- Modal Untuk Buat Akses Menu -->
+                <div class="modal fade modal-create-new-menu-permission" tabindex="-1" role="dialog"
+                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myLargeModalLabel">Create Akses Menu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 needs-validation" novalidate>
+                                    <div class="col-md-4">
+                                        <label for="validationCustom01" class="form-label">Nama Menu</label>
+                                        <input type="text" class="form-control" id="validationCustom01"
+                                            placeholder="Entry nama menu" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="validationCustom01" class="form-label">Nama Access Key</label>
+                                        <input type="text" class="form-control" id="validationCustom01"
+                                            placeholder="Entry access menu" required>
+                                    </div>
+
+                                    <!-- </div> -->
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                    </div>
+                                    <!-- end col -->
+                                </form><!-- end form -->
+
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

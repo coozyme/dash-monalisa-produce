@@ -7,6 +7,7 @@ const { role, addRole } = require('../controller/management-user.js')
 // router.use(isLoginAdmin)
 router.get('/role', role);
 router.get('/add-role', addRole)
+router.get('/permission', addRole)
 // router.get('/auth', function(req, res){res.redirect('/auth/login')});
 
 module.exports = router;

@@ -1,0 +1,148 @@
+<%- include('../../partials/header.ejs') -%>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="page-title-box">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h6 class="page-title">Management Permission Role</h6>
+                        </div>
+                        <div class="row mt-5">
+                            <div>
+                                <button class="btn btn-primary  dropdown-toggle mb-2" type="button"
+                                    aria-expanded="false" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                                    <i class="fas fa-plus-circle"></i> Buat Role User
+                                </button>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">List Role</h4>
+                                        <p class="card-title-desc">For basic styling—light padding and
+                                            only horizontal dividers—add the base class <code>.table</code> to any
+                                            <code>&lt;table&gt;</code>.
+                                        </p>
+
+                                        <div class="table-responsive">
+                                            <table class="table mb-0">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Username</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>Jacob</td>
+                                                        <td>Thornton</td>
+                                                        <td>@fat</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>Larry</td>
+                                                        <td>the Bird</td>
+                                                        <td>@twitter</td>
+                                                    </tr>
+                                                </tbody>
+                                                <!-- end tbody -->
+                                            </table><!-- end table -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <!--  Modal content for Buat Role Baru -->
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myLargeModalLabel">Buat Role</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 needs-validation" novalidate>
+                                    <div class="col-md-4">
+                                        <label for="validationCustom01" class="form-label">Nama Role</label>
+                                        <input type="text" class="form-control" id="validationCustom01"
+                                            placeholder="Masukan nama role" required>
+                                    </div>
+
+                                    <h6 class="form-label">Menu Access Role</h6>
+                                    <div>
+                                        <div class="form-check">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="invalidCheck2" required>
+                                                <label class="form-check-label" for="invalidCheck2">
+                                                    Dashboard Analytic Report
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="invalidCheck2" required>
+                                                <label class="form-check-label" for="invalidCheck2">
+                                                    Management User
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="invalidCheck2" required>
+                                                <label class="form-check-label" for="invalidCheck2">
+                                                    Buat Order Produksi
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="invalidCheck2" required>
+                                                <label class="form-check-label" for="invalidCheck2">
+                                                    Laporan Hasil Produksi
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- </div> -->
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit">Submit form</button>
+                                    </div>
+                                    <!-- end col -->
+                                </form><!-- end form -->
+
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+    </div>
+    <%- include('../../partials/footer.ejs') -%>
