@@ -304,16 +304,17 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 needs-validation" novalidate>
+                                <form class="row g-3 needs-validation" novalidate action="/management-user/add-menu"
+                                    method="post">
                                     <div class="col-md-4">
                                         <label for="validationCustom01" class="form-label">Nama Menu</label>
-                                        <input type="text" class="form-control" id="validationCustom01"
-                                            placeholder="Entry nama menu" required>
+                                        <input type="text" class="form-control" id="nameMenu" name="nameMenu"
+                                            value="<%= dataMenu.nameMenu %>" placeholder="Entry nama menu" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="validationCustom01" class="form-label">Nama Access Key</label>
-                                        <input type="text" class="form-control" id="validationCustom01"
-                                            placeholder="Entry access menu" required>
+                                        <input type="text" class="form-control" id="accessMenu" name="accessMenu"
+                                            value="<%= dataMenu.accessMenu %>" placeholder="Entry access menu" required>
                                     </div>
 
                                     <!-- </div> -->

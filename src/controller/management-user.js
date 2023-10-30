@@ -4,7 +4,11 @@ module.exports = {
          var pic = {
             logo: "../assets/img/stisla-fill.svg"
          }
-         res.render('pages/management-user/role.ejs', { pic: pic })
+         let dataMenu = {
+            nameMenu: "",
+            accessMenu: ""
+         };
+         res.render('pages/management-user/role.ejs', { pic: pic, dataMenu: dataMenu })
          //  res.json({ info: 'Node.js, Express, and Postgres API ok' })
       } catch (error) {
          console.log('er', error)

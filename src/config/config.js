@@ -5,20 +5,20 @@ const config = {
    "API_KEY": process.env.API_KEY,
 
    "DATABASES": {
-      "POSTGRES": {
-         "DATABASE": process.env.DB_POSTGRES_NAME,
-         "USERNAME": process.env.DB_POSTGRES_USERNAME,  //only for testing purposes you can also define the values here
-         "PASSWORD": process.env.DB_POSTGRES_PASSWORD,
-         "HOST": process.env.DB_POSTGRES_HOST,
-         "PORT": process.env.DB_POSTGRES_PORT,
-         "DIALECT": process.env.DB_POSTGRES_DIALECT //here you need 
-         // "DATABASE": configure.databases.postgresql.database,
-         // "USERNAME": configure.databases.postgresql.username,
-         // "PASSWORD": configure.databases.postgresql.password,
-         // "HOST": configure.databases.postgresql.host,
-         // "DIALECT": configure.databases.postgresql.dialect,
-         // "POOL": configure.databases.postgresql.pool
-      },
+      // "POSTGRES": {
+      //    "DATABASE": process.env.DB_POSTGRES_NAME,
+      //    "USERNAME": process.env.DB_POSTGRES_USERNAME,  //only for testing purposes you can also define the values here
+      //    "PASSWORD": process.env.DB_POSTGRES_PASSWORD,
+      //    "HOST": process.env.DB_POSTGRES_HOST,
+      //    "PORT": process.env.DB_POSTGRES_PORT,
+      //    "DIALECT": process.env.DB_POSTGRES_DIALECT //here you need 
+      // "DATABASE": configure.databases.postgresql.database,
+      // "USERNAME": configure.databases.postgresql.username,
+      // "PASSWORD": configure.databases.postgresql.password,
+      // "HOST": configure.databases.postgresql.host,
+      // "DIALECT": configure.databases.postgresql.dialect,
+      // "POOL": configure.databases.postgresql.pool
+      // },
       "MYSQL": {
          "DATABASE": process.env.DB_MYSQL_NAME,
          "USERNAME": process.env.DB_MYSQL_USERNAME,  //only for testing purposes you can also define the values here
