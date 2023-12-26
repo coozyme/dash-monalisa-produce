@@ -1,10 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": "root123",
-    "database": "nuruljannah-dev",
+    "password": "root",
+    "database": "db_monalisa_produce",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",

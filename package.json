@@ -4,7 +4,7 @@
   "description": "cms arstnesia",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server.js",
+    "start": "nodemon ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "arysetyap",
@@ -24,8 +24,7 @@
     "path": "0.12.7",
     "pg": "8.7.3",
     "pg-hstore": "2.3.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sequelize": "^6.25.8"
+    "sequelize": "^6.25.8",
+    "socket.io": "^4.7.2"
   }
 }

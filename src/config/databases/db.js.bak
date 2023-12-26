@@ -134,18 +134,29 @@ for (let i = 0; i < databases.length; i++) {
       );
     })
     .forEach((file) => {
-      console.log('LOG-ASDW', file)
+      // console.log('LOG-ASDW', file)
       //const model = sequelize.import(path.join('./models', file));
       // const model = require(path.join(__dirname, '../../models', file))(sequelize, Sequelize)
-      const model = require(path.join(__dirname, '../../models', file))
+      const pathModel = path.join(__dirname, '../../models', file)
+      // console.log('LOG-PATH-MODEL', pathModel)
+      const model = require(pathModel)
+      // console.log('LOG-model.name1', model)
+      // console.log('LOG-model.name', model.name)
       sequelize[model.name] = model;
-      console.log('LOG-sequelize[model.name]', sequelize[model.name])
+      // console.log('LOG-sequelize[model.name]', sequelize[model.name])
     });
 
 }
 
+// Object.keys(db).forEach(modelName => {
+//   console.log('LOG-ModelName', modelName)
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
+
 Object.keys(db).forEach(modelName => {
-  console.log('LOG-OOP', modelName)
+  // console.log('LOG-NAME-MODEL', modelName)
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
@@ -158,6 +169,8 @@ module.exports = db;
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.DataTypes = DataTypes;
+
+// db.role = require("../../models/role.js")(sequelize, Sequelize);
 
 
 

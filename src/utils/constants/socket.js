@@ -1,0 +1,5 @@
+const CHAT_BEGINNING = "CHAT_BEGINNING"
+const BOT_NAME = "BOT_NAME"
+const BOT_INTRO = "BOT_INTRO"
+
+module.exports = { CHAT_BEGINNING, BOT_INTRO, BOT_NAME }

@@ -1,14 +1,14 @@
 module.exports = {
    role: async (req, res) => {
       try {
-         var pic = {
-            logo: "../assets/img/stisla-fill.svg"
-         }
+         // var pic = {
+         //    logo: "../assets/img/stisla-fill.svg"
+         // }
          let dataMenu = {
             nameMenu: "",
             accessMenu: ""
          };
-         res.render('pages/management-user/role.ejs', { pic: pic, dataMenu: dataMenu })
+         res.render('pages/management-user/role.ejs', { dataMenu: dataMenu })
          //  res.json({ info: 'Node.js, Express, and Postgres API ok' })
       } catch (error) {
          console.log('er', error)

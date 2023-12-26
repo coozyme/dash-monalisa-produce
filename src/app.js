@@ -5,7 +5,9 @@ var path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const http = require('http');
+const Socket = require('./utils/socket/socket.js');
+const port = process.env.PORT || 3000;
 
 
 var app = express();
@@ -61,4 +63,30 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+
+// app.listen(port, () => {
+//   console.log('Running Server: ', port);
+//   // db.Ping()
+// });
+
+// const io = socketio(server)
+
+// io.on('connection', (socket) => {
+//   console.log('New connection')
+//   socket.on('message', (data) => {
+//     console.log(`New message from ${socket.id}: ${data}`);
+//   })
+// })
+
+
+const server = http.createServer(app);
+const { SocketInstance } = Socket.createSocket(server);
+SocketInstance(server);
+
+
+server.listen(port, () => {
+  console.log('Running Server: ', port);
+  // db.Ping()
+})
+// module.exports = app;
