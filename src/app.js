@@ -22,11 +22,13 @@ const auth = require('./routes/auth.js');
 const dashboard = require('./routes/dashboard.js');
 const product = require('./routes/product.js');
 const managementRole = require('./routes/management-user.js');
+const machine = require('./routes/machine.js');
 // const categoryRouter = require('./src/routes/category.router');
 
 // app.use(logger('dev'));
 // app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public/')));
 // app.use(cookieParser());
 
@@ -39,6 +41,7 @@ app.use('/auth', auth);
 app.use('/', dashboard);
 app.use('/products', product);
 app.use('/management-user', managementRole);
+app.use('/machine', machine);
 // app.use('/dashboard/category', categoryRouter);
 
 

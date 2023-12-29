@@ -3,7 +3,7 @@
 // const { Sequelize, sequelize } = require("../config/databases/db")
 // const menus = require("../models/menus");
 const { Menus, MenusDTO } = require("../models");
-const { ResponseSuccess } = require("../utils/response/success");
+const { Response } = require("../utils/response/response");
 
 module.exports = {
    // Get: async (req, res) => {

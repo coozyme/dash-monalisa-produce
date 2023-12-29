@@ -6,33 +6,45 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.BIGINT
          },
          name: {
             type: DataTypes.STRING
          },
-         code: {
+         kode: {
             type: DataTypes.STRING,
             unique: true
          },
-         pic: {
+         pic_id: {
             type: DataTypes.STRING,
             defaultValue: "",
+         },
+         average_produce: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
          },
          status: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
          },
-         createdAt: {
+         created_at: {
             type: DataTypes.DATE,
             allowNull: false,
          },
-         updatedAt: {
+         updated_at: {
             type: DataTypes.DATE,
             allowNull: true,
-         }
+         },
+         deleted_at: {
+            type: DataTypes.DATE,
+            allowNull: true,
+         },
+         createdAt: false,
+         // If don't want updatedAt
+         updatedAt: false,
       },
       {
+         timestamps: false,
          tableName: "machines",
       }
    );

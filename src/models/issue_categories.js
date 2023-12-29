@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Menus = sequelize.define(
-    "Menus",
+  const IssueCategories = sequelize.define(
+    "IssueCategories",
     {
       id: {
         allowNull: false,
@@ -8,16 +8,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.BIGINT
       },
-      name: {
-        type: DataTypes.STRING
-      },
-      name_key: {
+      name_issue: {
         type: DataTypes.STRING,
-        unique: true
-      },
-      is_publish: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        allowNull: false,
       },
       created_at: {
         type: DataTypes.DATE,
@@ -26,11 +19,15 @@ module.exports = (sequelize, DataTypes) => {
       updated_at: {
         type: DataTypes.DATE,
         allowNull: true,
+      },
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
       }
     },
     {
-      tableName: "menus",
+      tableName: "issue_categories",
     }
   );
-  return Menus;
+  return IssueCategories;
 };
