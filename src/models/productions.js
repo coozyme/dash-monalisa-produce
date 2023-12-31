@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             allowNull: false,
          },
-         kode_order: {
+         customer_name: {
             type: DataTypes.STRING,
             allowNull: false,
          },
@@ -16,13 +16,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: false,
          },
-         target_daily: {
-            type: DataTypes.BIGINT,
-         },
-         total_target: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            defaultValue: 0,
+         total_target_daily: {
+            type: DataTypes.NUMBER,
          },
          start_date: {
             type: DataTypes.DATE,

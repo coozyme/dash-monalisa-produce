@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-   const ProductionsReportDaily = sequelize.define(
-      "ProductionsReportDaily",
+   const ProductionsReportDailyDetail = sequelize.define(
+      "ProductionsReportDailyDetail",
       {
          id: {
             type: DataTypes.BIGINT,
@@ -8,20 +8,12 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             allowNull: false,
          },
-         production_id: {
+         report_daily_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
          },
-         reporter_id: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-         },
-         approver_id: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-         },
-         checklist_approved: {
-            type: DataTypes.BOOLEAN,
+         material_name: {
+            type: DataTypes.TEXT,
             allowNull: false,
          },
          total_production: {
@@ -33,11 +25,8 @@ module.exports = (sequelize, DataTypes) => {
             values: ['Meter', 'Yard', 'Kg', 'Lembar', 'Roll'],
             defaultValue: 'Meter',
          },
-         issue_id: {
-            type: DataTypes.BIGINT,
-         },
-         notes: {
-            type: DataTypes.TEXT,
+         checklist_approved: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
          },
          created_at: {
@@ -54,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
          },
       },
       {
-         tableName: "productions_report_daily",
+         tableName: "productions_report_daily_detail",
       }
    );
-   return ProductionsReportDaily;
+   return ProductionsReportDailyDetail;
 };

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: "",
          },
          average_produce: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.NUMBER,
             allowNull: false,
          },
          status: {
@@ -39,13 +39,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
          },
-         createdAt: false,
-         // If don't want updatedAt
-         updatedAt: false,
       },
       {
-         timestamps: false,
          tableName: "machines",
+         // If don't want createdAt
+         createdAt: false,
+
+         // If don't want updatedAt
+         updatedAt: false,
+
       }
    );
    return Machines;

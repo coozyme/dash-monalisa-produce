@@ -5,7 +5,7 @@ function Response(status, code, message, data) {
       message: message ? message : "Success",
       data: data ? data : null,
    }
-   return response
+   return JSON.stringify(response, null, 2)
 }
 
 module.exports = {
