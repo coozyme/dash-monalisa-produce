@@ -3,10 +3,9 @@ module.exports = (sequelize, DataTypes) => {
       "Users",
       {
          id: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4, // Or DataTypes.UUIDV1
             primaryKey: true,
-            autoIncrement: true,
-            allowNull: false,
          },
          username: {
             type: DataTypes.STRING,
@@ -29,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
          tableName: "users",
+         // If don't want createdAt
+         createdAt: false,
+
+         // If don't want updatedAt
+         updatedAt: false,
       }
    );
    return Users;

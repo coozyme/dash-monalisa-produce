@@ -33,6 +33,7 @@ module.exports = {
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
+            return
          }
 
          res.set('Content-Type', 'application/json')
@@ -72,6 +73,7 @@ module.exports = {
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
+            return
          }
 
          res.set('Content-Type', 'application/json')
@@ -120,6 +122,7 @@ module.exports = {
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
+            return
          }
 
          res.set('Content-Type', 'application/json')
@@ -162,6 +165,7 @@ module.exports = {
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
+            return
          }
 
          res.set('Content-Type', 'application/json')
@@ -199,6 +203,7 @@ module.exports = {
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
+            return
          }
 
          res.set('Content-Type', 'application/json')
