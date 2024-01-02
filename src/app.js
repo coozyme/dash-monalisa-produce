@@ -6,8 +6,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const http = require('http');
+var cors = require('cors')
 const Socket = require('./utils/socket/socket.js');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 
 var app = express();
@@ -23,6 +24,7 @@ const dashboard = require('./routes/dashboard.js');
 const product = require('./routes/product.js');
 const managementRole = require('./routes/management-user.js');
 const machine = require('./routes/machine.js');
+const categories = require('./routes/categories.js');
 // const categoryRouter = require('./src/routes/category.router');
 
 // app.use(logger('dev'));
@@ -36,12 +38,18 @@ app.use(express.static(path.join(__dirname, '../public/')));
 // console.log("LOG-__dirname", __dirname)
 // app.use(express.static(__dirname + '../public/'));
 
+var corsOptions = {
+  origin: 'http:/127.0.0.1',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) chok
+}
 
+app.use(cors());
 app.use('/auth', auth);
 app.use('/', dashboard);
 app.use('/products', product);
 app.use('/management-user', managementRole);
 app.use('/machine', machine);
+app.use('/categories', categories);
 // app.use('/dashboard/category', categoryRouter);
 
 

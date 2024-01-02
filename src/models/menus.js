@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT
       },
       name: {
-        type: DataTypes.STRING
-      },
-      name_key: {
         type: DataTypes.STRING,
-        unique: true
+        allowNull: false,
+      },
+      menu_key: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
       },
       is_publish: {
         type: DataTypes.BOOLEAN,
@@ -30,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "menus",
+      // If don't want createdAt
+      createdAt: false,
+      // If don't want updatedAt
+      updatedAt: false,
     }
   );
   return Menus;

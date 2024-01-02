@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       name_issue: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       created_at: {
         type: DataTypes.DATE,
@@ -27,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "issue_categories",
+      // If don't want createdAt
+      createdAt: false,
+      // If don't want updatedAt
+      updatedAt: false,
     }
   );
   return IssueCategories;

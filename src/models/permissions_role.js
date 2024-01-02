@@ -3,15 +3,20 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  var Roles = sequelize.define('Roles', {
+  var PermissionsRole = sequelize.define('PermissionsRole', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT
     },
-    title: {
-      type: DataTypes.STRING
+    role_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    menu_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
     },
     created_at: {
       allowNull: false,
@@ -21,12 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE
     },
-    deleted_at: {
-      allowNull: true,
-      type: DataTypes.DATE
-    }
   }, {
-    tableName: "roles",
+    tableName: "permissions_role",
     // If don't want createdAt
     createdAt: false,
 
@@ -34,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: false,
   });
 
-  Roles.associate = function (models) {
+  PermissionsRole.associate = function (models) {
 
   }
 
-  return Roles
+  return PermissionsRole
 };

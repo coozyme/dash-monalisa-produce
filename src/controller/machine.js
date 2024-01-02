@@ -29,7 +29,7 @@ module.exports = {
          res.status(201).send(Response(true, "201", "Success created", machine.dataValues))
       } catch (err) {
          console.log('LOG-ERR-Add', err)
-         msg = err.errors.map(e => e.message)[0]
+         msg = err.errors?.map(e => e.message)[0]
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
@@ -57,7 +57,7 @@ module.exports = {
             dataObject = {
                id: data.id,
                name: data.name,
-               code: data.kode,
+               kode: data.kode,
                pic: data.pic_id,
                averageProduce: data.average_produce,
                status: data.status,
@@ -69,7 +69,7 @@ module.exports = {
          res.status(200).send(Response(true, "200", "Data found", dataObjects))
       } catch (err) {
          console.log('LOG-ERR-Add', err)
-         msg = err.errors.map(e => e.message)[0]
+         msg = err.errors?.map(e => e.message)[0]
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))
@@ -118,7 +118,7 @@ module.exports = {
          res.status(200).send(Response(true, "200", "Data found", dataObjects[0]))
       } catch (err) {
          console.log('LOG-ERR-GetByID', err)
-         msg = err.errors.map(e => e.message)[0]
+         msg = err.errors?.map(e => e.message)[0]
          if (err.name == "SequelizeUniqueConstraintError") {
             res.set('Content-Type', 'application/json')
             res.status(409).send(Response(false, "409", msg, null))

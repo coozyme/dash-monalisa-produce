@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
          tableName: "productions",
+         // If don't want createdAt
+         createdAt: false,
+
+         // If don't want updatedAt
+         updatedAt: false,
       }
    );
    return Productions;
