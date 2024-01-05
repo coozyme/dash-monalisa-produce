@@ -17,19 +17,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN
     },
     user_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     role_id: {
       type: DataTypes.BIGINT,
-      allowNull: false
+      allowNull: true
     },
     created_at: {
       allowNull: false,
       type: DataTypes.DATE
     },
     updated_at: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.DATE
     },
     deleted_at: {
@@ -37,11 +37,24 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     }
   }, {
-    tableName: "employee"
+    tableName: "employee",
+    // If don't want createdAt
+    createdAt: false,
+
+    // If don't want updatedAt
+    updatedAt: false,
   });
 
   Employee.associate = function (models) {
+    Employee.belongsTo(models.Users, {
+      foreignKey: 'user_id',
+      as: 'user'
+    })
 
+    Employee.belongsTo(models.Roles, {
+      foreignKey: 'role_id',
+      as: 'role'
+    })
   }
 
   return Employee

@@ -86,6 +86,7 @@ module.exports = {
             res.status(409).send(Response(false, "409", msg, null))
             return
          }
+
          res.set('Content-Type', 'application/json')
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }

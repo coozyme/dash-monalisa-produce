@@ -50,5 +50,12 @@ module.exports = (sequelize, DataTypes) => {
 
       }
    );
+
+   Machines.associate = function (models) {
+      Machines.belongsTo(models.Employee, {
+         foreignKey: 'pic_id',
+         as: 'employee'
+      })
+   }
    return Machines;
 };

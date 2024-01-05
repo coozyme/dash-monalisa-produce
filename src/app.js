@@ -21,6 +21,7 @@ app.engine('ejs', require('ejs').renderFile);
 // const authapi = require('./routes/auth.route.js');
 const auth = require('./routes/auth.js');
 const dashboard = require('./routes/dashboard.js');
+const employee = require('./routes/employee.js');
 const product = require('./routes/product.js');
 const managementRole = require('./routes/management-user.js');
 const machine = require('./routes/machine.js');
@@ -46,6 +47,7 @@ var corsOptions = {
 app.use(cors());
 app.use('/auth', auth);
 app.use('/', dashboard);
+app.use('/employee', employee);
 app.use('/products', product);
 app.use('/management-user', managementRole);
 app.use('/machine', machine);

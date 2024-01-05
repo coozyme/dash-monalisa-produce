@@ -1,4 +1,4 @@
-const { Machines } = require("../models");
+const { Machines, Employee } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
 
@@ -49,6 +49,13 @@ module.exports = {
             where: {
                deleted_at: null,
             },
+            include: [
+               {
+                  model: Employee,
+                  as: "employee",
+                  attributes: ["fullname",],
+               },
+            ],
          })
 
          machine.forEach(data => {
@@ -58,7 +65,7 @@ module.exports = {
                id: data.id,
                name: data.name,
                kode: data.kode,
-               pic: data.pic_id,
+               pic: data.employee.fullname,
                averageProduce: data.average_produce,
                status: data.status,
             }

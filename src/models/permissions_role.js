@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     },
     updated_at: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.DATE
     },
   }, {
@@ -36,6 +36,15 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   PermissionsRole.associate = function (models) {
+    PermissionsRole.belongsTo(models.Roles, {
+      foreignKey: 'role_id',
+      as: 'role'
+    })
+
+    PermissionsRole.belongsTo(models.Menus, {
+      foreignKey: 'menu_id',
+      as: 'menu'
+    })
 
   }
 
