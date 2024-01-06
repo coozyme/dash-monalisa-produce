@@ -45,35 +45,43 @@ module.exports = {
                {
                   model: Menus,
                   as: "menu",
-                  attributes: ["id", "name"],
+                  attributes: ["id", "name", "menu_key"],
+               },
+               {
+                  model: Roles,
+                  as: "role",
+                  attributes: ["id", "title"],
                },
             ],
          })
-         // const roles = await Roles.findAll({
-         //    where: {
-         //       deleted_at: null
-         //    },
-         // })
+
+         if (permissionRole?.length == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(204).send(Response(false, "204", "Data does not exist", null))
+            return
+         }
 
          console.log('LOG-GetDetailPermissionRole', permissionRole)
-         const dataObjects = []
+         const menuData = []
+         const response = {
+            roleId: permissionRole[0]?.role?.id,
+            roleName: permissionRole[0]?.role?.title,
+            menu: menuData
+         }
+
          permissionRole.forEach(data => {
             console.log('LOG-data', data.menu.id, data.menu.name)
             const dataObject = {
                id: data.menu.id,
                menuName: data.menu.name,
             }
-            dataObjects.push(dataObject)
+            menuData.push(dataObject)
          });
 
-         if (dataObjects.length == 0) {
-            res.set('Content-Type', 'application/json')
-            res.status(204).send(Response(false, "204", "Data does not exist", null))
-            return
-         }
+
 
          res.set('Content-Type', 'application/json')
-         res.status(200).send(Response(true, "200", "Data found", dataObjects))
+         res.status(200).send(Response(true, "200", "Data found", response))
       } catch (error) {
          console.log('er', error)
       }

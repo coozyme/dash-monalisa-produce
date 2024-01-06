@@ -76,7 +76,7 @@ module.exports = {
                {
                   model: Roles,
                   as: "role",
-                  attributes: ["title",],
+                  attributes: ["title"],
 
                }
             ],
@@ -90,6 +90,7 @@ module.exports = {
                fullname: data.fullname,
                username: data.user.username,
                role: data.role.title,
+               roleId: data.role_id,
                isActive: data.is_active,
             }
 
