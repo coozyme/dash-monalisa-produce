@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             allowNull: false,
          },
-         customer_name: {
+         order_id: {
+            type: DataTypes.STRING,
+            allowNull: false,
+         },
+         customer: {
             type: DataTypes.STRING,
             allowNull: false,
          },
@@ -16,15 +20,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: false,
          },
-         total_target_daily: {
-            type: DataTypes.NUMBER,
+         status: {
+            type: DataTypes.ENUM,
+            allowNull: false,
+            values: ('OPEN', 'PROCCESS', 'FINISH', 'ON_HOLD')
          },
          start_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
          },
          end_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
          },
          created_at: {
@@ -48,6 +54,14 @@ module.exports = (sequelize, DataTypes) => {
          // If don't want updatedAt
          updatedAt: false,
       }
+
    );
+
+   Productions.associate = function (models) {
+      Productions.belongsTo(models.Machines, {
+         foreignKey: 'machine_id',
+         as: 'machine'
+      })
+   }
    return Productions;
 };
