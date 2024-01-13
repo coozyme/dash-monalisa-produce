@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: false,
          },
-         material_name: {
+         material: {
             type: DataTypes.TEXT,
             allowNull: false,
          },
-         total_production: {
+         quantity: {
             type: DataTypes.NUMBER,
             allowNull: false,
          },
@@ -27,11 +27,15 @@ module.exports = (sequelize, DataTypes) => {
          },
          checklist_approved: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
+            allowNull: true,
+         },
+         checklist_approved_date: {
+            type: DataTypes.DATE,
+            allowNull: true,
          },
          created_at: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
          },
          updated_at: {
             type: DataTypes.DATE,

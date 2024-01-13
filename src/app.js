@@ -26,13 +26,13 @@ const product = require('./routes/productions.js');
 const managementRole = require('./routes/management-user.js');
 const machine = require('./routes/machine.js');
 const categories = require('./routes/categories.js');
-// const categoryRouter = require('./src/routes/category.router');
+const user = require('./routes/user.js');
 
 // app.use(logger('dev'));
 // app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../public/')));
+// app.use(express.static(path.join(__dirname, '../public/')));
 // app.use(cookieParser());
 
 // app.use('/static', express.static('public'))
@@ -43,10 +43,10 @@ var corsOptions = {
   origin: 'http:/127.0.0.1',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) chok
 }
-
 app.use(cors());
 app.use('/auth', auth);
 app.use('/', dashboard);
+app.use('/user', user);
 app.use('/employee', employee);
 app.use('/product', product);
 app.use('/management-user', managementRole);

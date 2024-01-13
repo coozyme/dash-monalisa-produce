@@ -14,31 +14,31 @@ module.exports = (sequelize, DataTypes) => {
          },
          reporter_id: {
             type: DataTypes.BIGINT,
-            allowNull: false,
+            allowNull: true,
          },
          approver_id: {
             type: DataTypes.BIGINT,
-            allowNull: false,
+            allowNull: true,
          },
          checklist_approved: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
+            allowNull: true,
          },
-         total_production: {
-            type: DataTypes.NUMBER,
-            allowNull: false,
-         },
-         unit: {
-            type: DataTypes.ENUM,
-            values: ['Meter', 'Yard', 'Kg', 'Lembar', 'Roll'],
-            defaultValue: 'Meter',
+         checklist_approved_date: {
+            type: DataTypes.DATE,
+            allowNull: true,
          },
          issue_id: {
             type: DataTypes.BIGINT,
+            allowNull: true,
          },
          notes: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
+         },
+         production_date: {
+            type: DataTypes.DATE,
+            allowNull: true,
          },
          created_at: {
             type: DataTypes.DATE,
@@ -62,5 +62,33 @@ module.exports = (sequelize, DataTypes) => {
          updatedAt: false,
       }
    );
+
+   ProductionsReportDaily.associate = function (models) {
+      ProductionsReportDaily.belongsTo(models.Productions, {
+         foreignKey: 'production_id',
+         as: 'production'
+      })
+
+      ProductionsReportDaily.belongsTo(models.Employee, {
+         foreignKey: 'reporter_id',
+         as: 'reporter'
+      })
+
+      ProductionsReportDaily.belongsTo(models.Employee, {
+         foreignKey: 'approver_id',
+         as: 'approver'
+      })
+
+      ProductionsReportDaily.belongsTo(models.IssueCategories, {
+         foreignKey: 'issue_id',
+         as: 'issue'
+      })
+
+      ProductionsReportDaily.hasMany(models.ProductionsReportDailyDetail, {
+         foreignKey: 'report_daily_id',
+         as: 'reportDailyDetail'
+      })
+   }
+
    return ProductionsReportDaily;
 };

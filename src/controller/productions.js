@@ -71,6 +71,7 @@ module.exports = {
                machineId: item.machine_id,
                machineName: item.machine.name,
                machineKode: item.machine.kode,
+               machineStatus: item.machine.status,
                status: item.status,
                startProductionDate: item.start_date,
                endProductionDate: item.end_date,
@@ -132,12 +133,12 @@ module.exports = {
    },
    UpdateOrderProduction: async (req, res) => {
       try {
-         const { orderId } = req.params;
-         const { customer, machineId, status, startProductionDate, endProductionDate } = req.body;
+         const { id } = req.params;
+         const { customer, orderId, machineId, status, startProductionDate, endProductionDate } = req.body;
 
          const dataProduction = await Productions.findOne({
             where: {
-               order_id: orderId
+               order_id: id
             }
          })
 
@@ -159,7 +160,7 @@ module.exports = {
 
          await Productions.update(payload, {
             where: {
-               order_id: orderId
+               order_id: id
             }
          })
 

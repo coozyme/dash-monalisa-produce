@@ -4,6 +4,7 @@ const { EncryptPassword } = require("../utils/encrypt/encrypt");
 const { sequelize, Employee, Users, Roles } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
+const uuid = require('node-uuid');
 
 module.exports = {
    Add: async (req, res) => {
@@ -12,10 +13,10 @@ module.exports = {
          const { fullname, username, password, roleId } = req.body
 
          passwordHash = await EncryptPassword(password)
-         uuid = UUID.v4()
-
+         const uuid = UUID.v4()
+         const uid = UUID.parse(uuid)
          const user = await Users.create({
-            id: UUID.parse(uuid),
+            id: uid,
             username: username,
             password: passwordHash,
             created_at: TimeZoneIndonesia(),
@@ -27,7 +28,7 @@ module.exports = {
          const employee = await Employee.create({
             fullname: fullname,
             is_active: true,
-            user_id: user.id,
+            user_id: uid,
             role_id: parseInt(roleId),
             created_at: TimeZoneIndonesia(),
          }, {
@@ -47,7 +48,7 @@ module.exports = {
          res.status(201).send(Response(true, "201", "Success Created", dataObject))
       } catch (err) {
          t.rollback();
-         console.log('LOG-ERR-Get', err)
+         console.log('LOG-ERR-Add', err)
 
          msg = err.errors?.map(e => e.message)[0]
          if (err.name == "SequelizeUniqueConstraintError") {
@@ -119,7 +120,7 @@ module.exports = {
          console.log('LOG-UPDATE-ID', id)
 
          const dataEmployee = await Employee.findOne({ where: { id: id, deleted_at: null } })
-         console.log('LOG-dataEmployee', dataEmployee)
+         // console.log('LOG-dataEmployee', dataEmployee)
          if (!dataEmployee) {
             res.set('Content-Type', 'application/json')
             res.status(404).send(Response(false, "404", "Data not found", null))
@@ -137,13 +138,15 @@ module.exports = {
             },
             transaction: t
          })
-         console.log('LOG-UPDATE', employee)
+         // console.log('LOG-user_id', dataEmployee.dataValues.user_id)
+         // const uidUser = uuid.parse(dataEmployee.dataValues.user_id, new Buffer(16))
+         // console.log('LOG-uidUser', uidUser)
          const user = await Users.update({
             username: username,
             updated_at: TimeZoneIndonesia(),
          }, {
             where: {
-               id: employee.user_id,
+               id: dataEmployee.dataValues.user_id,
             },
             transaction: t
          })
@@ -189,7 +192,7 @@ module.exports = {
          res.set('Content-Type', 'application/json')
          res.status(200).send(Response(true, "200", "Success Updated", null))
       } catch (err) {
-         // t.rollback();
+         t.rollback();
          console.log('LOG-ERR-Get', err)
 
          msg = err.errors?.map(e => e.message)[0]

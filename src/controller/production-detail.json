@@ -1,0 +1,85 @@
+{
+   "status": true,
+   "code": "200",
+   "message": "Success get production",
+   "data": {
+      "orderId": "ORDPS981623",
+      "customer": "PT. Simone",
+      "machineId": 19,
+      "status": "FINISH",
+      "startDate": "2024-01-16",
+      "endDate": "2024-01-19",
+      "productionDetail": [
+         {
+            "id": 1,
+            "issueName": "MESIN RUSAK",
+            "reporterId": 1,
+            "reporterName": "Ary Setya Pambudi",
+            "approverId": null,
+            "approverName": null,
+            "productionDate": null,
+            "notes": "no",
+            "totalInMeter": 0,
+            "totalInKg": 0,
+            "materialData": [
+               {
+                  "material": "Rangkap + Coating",
+                  "quantity": 1000,
+                  "unit": "Meter",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               },
+               {
+                  "material": "Coating Nylon",
+                  "quantity": 700,
+                  "unit": "Yard",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               },
+               {
+                  "material": "Non Woven + Nylon",
+                  "quantity": 900,
+                  "unit": "Meter",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               }
+            ]
+         },
+         {
+            "id": 2,
+            "issueName": "MESIN RUSAK",
+            "reporterId": 1,
+            "reporterName": "Ary Setya Pambudi",
+            "approverId": null,
+            "approverName": null,
+            "productionDate": null,
+            "notes": "no",
+            "totalInMeter": 0,
+            "totalInKg": 0,
+            "materialData": [
+               {
+                  "material": "Rangkap + Coating",
+                  "quantity": 1000,
+                  "unit": "Meter",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               },
+               {
+                  "material": "Coating Nylon",
+                  "quantity": 700,
+                  "unit": "Yard",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               },
+               {
+                  "material": "Non Woven + Nylon",
+                  "quantity": 900,
+                  "unit": "Meter",
+                  "checklistApproved": false,
+                  "checklistApprovedDate": null
+               }
+            ]
+         }
+      ]
+   }
+}
