@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
          },
          average_produce: {
             type: DataTypes.NUMBER,
-            allowNull: false,
+            defaultValue: 0,
+            allowNull: true,
          },
          status: {
             type: DataTypes.BOOLEAN,

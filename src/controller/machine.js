@@ -8,22 +8,13 @@ module.exports = {
       try {
          dataObject = {
             name: req.body.name,
-            kode: req.body.code,
-            pic_id: req.body.pic,
+            kode: req.body.kode,
+            pic_id: req.body.picId,
             average_produce: req.body.averageProduce,
             status: req.body.status,
             created_at: TimeZoneIndonesia(),
          }
          const machine = await Machines.create(dataObject)
-         console.log('LOG-ADD', machine)
-         dataObject = {
-            id: machine.id,
-            name: machine.name,
-            code: machine.kode,
-            pic: machine.pic_id,
-            averageProduce: machine.average_produce,
-            status: machine.status,
-         }
 
          res.set('Content-Type', 'application/json')
          res.status(201).send(Response(true, "201", "Success created", machine.dataValues))
@@ -53,7 +44,7 @@ module.exports = {
                {
                   model: Employee,
                   as: "employee",
-                  attributes: ["fullname",],
+                  attributes: ["id", "fullname"],
                },
             ],
          })
@@ -65,7 +56,8 @@ module.exports = {
                id: data.id,
                name: data.name,
                kode: data.kode,
-               pic: data.employee.fullname,
+               picId: data.employee.id,
+               picName: data.employee.fullname,
                averageProduce: data.average_produce,
                status: data.status,
             }
@@ -98,6 +90,13 @@ module.exports = {
                id: id,
                deleted_at: null,
             },
+            include: [
+               {
+                  model: Employee,
+                  as: "employee",
+                  attributes: ["id", "fullname"],
+               },
+            ],
             limit: 1
          })
          console.log('LOG-GetByID', machine);
@@ -113,8 +112,9 @@ module.exports = {
             dataObject = {
                id: data.id,
                name: data.name,
-               code: data.kode,
-               pic: data.pic_id,
+               kode: data.kode,
+               picId: data.employee.id,
+               picName: data.employee.name,
                averageProduce: data.average_produce,
                status: data.status,
             }
@@ -143,8 +143,8 @@ module.exports = {
          console.log('LOG-Params.id', id);
          dataObject = {
             name: req.body.name,
-            kode: req.body.code,
-            pic_id: req.body.pic,
+            kode: req.body.kode,
+            pic_id: req.body.picId,
             average_produce: req.body.averageProduce,
             status: req.body.status,
             updated_at: TimeZoneIndonesia(),

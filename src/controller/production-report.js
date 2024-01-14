@@ -127,6 +127,7 @@ module.exports = {
                checklistApprovedDate: data.checklist_approved_date,
                productionDate: data.production_date,
                notes: data.notes,
+               isChecklistedAllMaterial: false,
                materialData: [],
             }
 
@@ -155,10 +156,39 @@ module.exports = {
             materialDataDaily.push(d)
          })
 
+
+
          materialDataDaily.forEach((data, idx) => {
             productionReportDailyData.forEach((data2, idx2) => {
+               const lengthMaterialData = materialDataDaily.length
+
                if (data.reportDailyId == data2.id) {
+
+
                   productionReportDailyData[idx2].materialData.push(data)
+               } else {
+                  countMaterialData = []
+               }
+
+
+            })
+         })
+
+         productionReportDailyData.forEach((data, idx) => {
+            const lengthMaterialData = data.materialData.length
+            let countMaterialData = []
+            data.materialData.forEach((d, idx2) => {
+               if (d?.isChecklistApproved == true) {
+                  countMaterialData.push(true)
+               } else {
+                  countMaterialData.push(false)
+               }
+               console.log('LOG-d?.isChecklistApproved', d?.isChecklistApproved)
+               console.log('LOG-countMaterialData', countMaterialData.length, lengthMaterialData)
+               if (countMaterialData.length == lengthMaterialData) {
+                  const isChecklistedAllMaterial = countMaterialData.find((o) => o == true)
+                  console.log('LOG-isChecklistedAllMaterial', isChecklistedAllMaterial)
+                  productionReportDailyData[idx].isChecklistedAllMaterial = isChecklistedAllMaterial ?? false
                }
             })
          })
