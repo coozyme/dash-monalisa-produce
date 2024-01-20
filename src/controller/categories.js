@@ -67,4 +67,74 @@ module.exports = {
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
    },
+   UpdateIssue: async (req, res) => {
+      try {
+         const { id } = req.params;
+         const { issueName } = req.body;
+
+         const payload = {
+            name_issue: issueName?.toUpperCase(),
+            updated_at: TimeZoneIndonesia(),
+         }
+
+         issue = await IssueCategories.update(payload, {
+            where: {
+               id: id,
+            }
+         })
+
+         if (issue[0] == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed update", null))
+            return
+         }
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Success update", null))
+      } catch (error) {
+         console.log('er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
+   DeleteIssue: async (req, res) => {
+      try {
+         const { id } = req.params;
+
+         const payload = {
+            deleted_at: TimeZoneIndonesia(),
+         }
+
+         issue = await IssueCategories.update(payload, {
+            where: {
+               id: id,
+            }
+         })
+
+         if (issue[0] == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed delete", null))
+            return
+         }
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Success delete", null))
+      } catch (error) {
+         console.log('er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   }
 }

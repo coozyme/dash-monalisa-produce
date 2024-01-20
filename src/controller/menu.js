@@ -129,5 +129,5 @@ module.exports = {
          res.set('Content-Type', 'application/json')
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
-   }
+   },
 }

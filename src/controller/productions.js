@@ -5,13 +5,14 @@ const { TimeZoneIndonesia } = require("../utils/times/timezone");
 module.exports = {
    AddorderProduction: async (req, res) => {
       try {
-         const { orderId, customer, machineId, status, startProductionDate, endProductionDate } = req.body;
+         const { orderId, customer, machineId, status, notes, startProductionDate, endProductionDate } = req.body;
 
          const payload = {
             order_id: orderId,
             customer: customer,
             machine_id: machineId,
             status: status,
+            notes: notes,
             start_date: startProductionDate,
             end_date: endProductionDate,
          }
@@ -73,6 +74,7 @@ module.exports = {
                machineKode: item.machine.kode,
                machineStatus: item.machine.status,
                status: item.status,
+               notes: item.notes,
                startProductionDate: item.start_date,
                endProductionDate: item.end_date,
             })
@@ -134,7 +136,7 @@ module.exports = {
    UpdateOrderProduction: async (req, res) => {
       try {
          const { id } = req.params;
-         const { customer, orderId, machineId, status, startProductionDate, endProductionDate } = req.body;
+         const { customer, orderId, machineId, status, notes, startProductionDate, endProductionDate } = req.body;
 
          const dataProduction = await Productions.findOne({
             where: {
@@ -153,6 +155,7 @@ module.exports = {
             customer: customer,
             machine_id: machineId,
             status: status,
+            notes: notes,
             start_date: startProductionDate,
             end_date: endProductionDate,
             updated_at: TimeZoneIndonesia()

@@ -23,7 +23,11 @@ module.exports = (sequelize, DataTypes) => {
          status: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values: ('OPEN', 'PROCCESS', 'FINISH', 'ON_HOLD')
+            values: ('OPEN', 'PROCCESS', 'FINISH', 'CLOSED', 'CANCEL', 'ON_HOLD')
+         },
+         notes: {
+            type: DataTypes.TEXT,
+            allowNull: true,
          },
          start_date: {
             type: DataTypes.DATEONLY,

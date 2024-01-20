@@ -1,4 +1,4 @@
-const { Roles, PermissionsRole, Menus } = require("../models");
+const { sequelize, Roles, PermissionsRole, Menus } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
 
@@ -153,6 +153,86 @@ module.exports = {
 
          res.set('Content-Type', 'application/json')
          res.status(201).send(Response(true, "201", "Success created", null))
+      } catch (error) {
+         console.log('er', error)
+      }
+   },
+   UpdateRole: async (req, res) => {
+      const t = await sequelize.transaction();
+      try {
+         const { roleName, menuId } = req.body
+         const id = req.params.id
+
+         var payload = {
+            title: roleName,
+            updated_at: TimeZoneIndonesia(),
+         }
+
+         role = await Roles.update(payload, {
+            where: {
+               id: id,
+            },
+            transaction: t
+         })
+
+         if (role[0] == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed update", null))
+            return
+         }
+
+         await PermissionsRole.destroy({
+            where: {
+               role_id: id,
+            },
+            transaction: t
+         })
+
+         menuId.forEach(async (data) => {
+            await PermissionsRole.create({
+               role_id: id,
+               menu_id: data,
+               created_at: TimeZoneIndonesia(),
+            })
+         })
+         await t.commit();
+         // const permissionRole = await PermissionsRole.destroy({
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Success update", null))
+      } catch (error) {
+         t.rollback();
+         console.log('er', error)
+         msg = err.errors?.map(e => e.message)[0]
+         if (err.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+
+
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
+   DeleteRole: async (req, res) => {
+      try {
+         const { id } = req.params
+         const role = await Roles.update({
+            deleted_at: TimeZoneIndonesia(),
+         }, {
+            where: {
+               id: id,
+            }
+         })
+
+         if (role[0] == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed delete", null))
+            return
+         }
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Success delete", null))
       } catch (error) {
          console.log('er', error)
       }
