@@ -4,7 +4,6 @@ const { EncryptPassword } = require("../utils/encrypt/encrypt");
 const { sequelize, Employee, Users, Roles } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
-const uuid = require('node-uuid');
 
 module.exports = {
    Add: async (req, res) => {
