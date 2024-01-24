@@ -1,6 +1,7 @@
 const { Productions, ProductionsReportDaily, ProductionsReportDailyDetail, IssueCategories, Employee } = require("../models");
 const { ConvertToMeter, CalculateMaterialProduction } = require("../utils/calculation/calculation");
 const { Response } = require("../utils/response/response");
+const { ConvertDateTimeUTC } = require("../utils/times/datetime");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
 
 module.exports = {
@@ -109,22 +110,26 @@ module.exports = {
             status: productionReportDaily[0].production.status,
             startDate: productionReportDaily[0].production.start_date,
             endDate: productionReportDaily[0].production.end_date ?? null,
-            productionDetail: productionReportDailyData
+            productionDetail: productionReportDailyData,
          }
 
          // production
          const materialDataDaily = []
          productionReportDaily.forEach((data) => {
+            let checklistApprovedDate = null
+            if (data.dataValues.checklist_approved_date) {
+               checklistApprovedDate = ConvertDateTimeUTC(data.dataValues.checklist_approved_date)
+            }
             const productionReportDailyDataObject = {
                id: data.id,
-               issueId: data.issue.id,
-               issueName: data.issue.name_issue,
+               issueId: data?.issue?.id,
+               issueName: data?.issue?.name_issue,
                reporterId: data.reporter.id ?? null,
                reporterName: data.reporter.fullname ?? null,
                approverId: data?.approver?.id ?? null,
                approverName: data?.approver?.fullname ?? null,
                isChecklistApproved: data.checklist_approved,
-               checklistApprovedDate: data.checklist_approved_date,
+               checklistApprovedDate: checklistApprovedDate,
                productionDate: data.production_date,
                notes: data.notes,
                isChecklistedAllMaterial: false,
@@ -144,6 +149,11 @@ module.exports = {
          console.log('LOG-productionReportDailyData', productionReportDailyData[0].id)
          productionReportDailyDetail.forEach((data, idx) => {
             console.log('LOG-data-productionReportDailyDetail-dataValues', data.dataValues)
+
+            let checklistApprovedDate = null
+            if (data.dataValues.checklist_approved_date) {
+               checklistApprovedDate = ConvertDateTimeUTC(data.dataValues.checklist_approved_date)
+            }
             const d = {
                id: data.dataValues.id,
                reportDailyId: data.dataValues.report_daily_id,
@@ -151,21 +161,28 @@ module.exports = {
                quantity: data.dataValues.quantity,
                unit: data.dataValues.unit,
                isChecklistApproved: data.dataValues.checklist_approved,
-               checklistApprovedDate: data.dataValues.checklist_approved_date ?? null,
+               checklistApprovedDate: checklistApprovedDate,
             }
+
+
             materialDataDaily.push(d)
          })
 
 
-
+         // add mapping data to every daily report
          materialDataDaily.forEach((data, idx) => {
             productionReportDailyData.forEach((data2, idx2) => {
-               const lengthMaterialData = materialDataDaily.length
+               // const lengthMaterialData = materialDataDaily.length
 
                if (data.reportDailyId == data2.id) {
-
+                  let checkAllApproveMaterial = true
+                  console.log('LOG-data.isChecklistApproved', data.isChecklistApproved)
+                  if (data.isChecklistApproved == false || data.isChecklistApproved == null) {
+                     checkAllApproveMaterial = false
+                  }
 
                   productionReportDailyData[idx2].materialData.push(data)
+                  productionReportDailyData[idx2].isChecklistedAllMaterial = checkAllApproveMaterial
                } else {
                   countMaterialData = []
                }
@@ -174,24 +191,24 @@ module.exports = {
             })
          })
 
-         productionReportDailyData.forEach((data, idx) => {
-            const lengthMaterialData = data.materialData.length
-            let countMaterialData = []
-            data.materialData.forEach((d, idx2) => {
-               if (d?.isChecklistApproved == true) {
-                  countMaterialData.push(true)
-               } else {
-                  countMaterialData.push(false)
-               }
-               console.log('LOG-d?.isChecklistApproved', d?.isChecklistApproved)
-               console.log('LOG-countMaterialData', countMaterialData.length, lengthMaterialData)
-               if (countMaterialData.length == lengthMaterialData) {
-                  const isChecklistedAllMaterial = countMaterialData.find((o) => o == true)
-                  console.log('LOG-isChecklistedAllMaterial', isChecklistedAllMaterial)
-                  productionReportDailyData[idx].isChecklistedAllMaterial = isChecklistedAllMaterial ?? false
-               }
-            })
-         })
+         // productionReportDailyData.forEach((data, idx) => {
+         //    const lengthMaterialData = data.materialData.length
+         //    let countMaterialData = []
+         //    data.materialData.forEach((d, idx2) => {
+         //       if (d?.isChecklistApproved == true) {
+         //          countMaterialData.push(true)
+         //       } else {
+         //          countMaterialData.push(false)
+         //       }
+         //       console.log('LOG-d?.isChecklistApproved', d?.isChecklistApproved)
+         //       console.log('LOG-countMaterialData', countMaterialData.length, lengthMaterialData)
+         //       if (countMaterialData.length == lengthMaterialData) {
+         //          const isChecklistedAllMaterial = countMaterialData.find((o) => o == false)
+         //          console.log('LOG-isChecklistedAllMaterial', isChecklistedAllMaterial)
+         //          productionDetailReponse.isChecklistedAllMaterial = isChecklistedAllMaterial ?? true
+         //       }
+         //    })
+         // })
 
          res.set('Content-Type', 'application/json')
          res.status(200).send(Response(true, "200", "Success get production", productionDetailReponse))
@@ -207,7 +224,7 @@ module.exports = {
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
    },
-   ChecklistApprove: async (req, res) => {
+   ChecklistMaterial: async (req, res) => {
       try {
          const { materialId, isApprove, approverId, reportDailyId } = req.query
          console.log('LOG-req.query', materialId, isApprove, approverId, reportDailyId)
@@ -250,6 +267,48 @@ module.exports = {
             })
          }
 
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Success approve production", null))
+      } catch (error) {
+         console.log('er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
+   ApproveReport: async (req, res) => {
+      try {
+         const { reportDailyId, approverId, isChecklistAllMaterial } = req.query
+
+         if (!reportDailyId && !approverId) {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed approve production", null))
+            return
+         }
+
+         if (isChecklistAllMaterial == 'false') {
+            res.set('Content-Type', 'application/json')
+            res.status(400).send(Response(false, "400", "Failed approve production", null))
+            return
+         }
+
+         await ProductionsReportDaily.update({
+            approver_id: parseInt(approverId),
+            checklist_approved: true,
+            checklist_approved_date: TimeZoneIndonesia(),
+            updated_at: TimeZoneIndonesia(),
+         }, {
+            where: {
+               id: reportDailyId,
+               deleted_at: null
+            }
+         })
 
          res.set('Content-Type', 'application/json')
          res.status(200).send(Response(true, "200", "Success approve production", null))

@@ -187,13 +187,18 @@ module.exports = {
             },
             transaction: t
          })
-
+         let menuRole = []
          menuId.forEach(async (data) => {
-            await PermissionsRole.create({
+            const dt = {
                role_id: id,
                menu_id: data,
                created_at: TimeZoneIndonesia(),
-            })
+            }
+            menuRole.push(dt)
+         })
+
+         await PermissionsRole.bulkCreate(menuRole, {
+            transaction: t
          })
          await t.commit();
          // const permissionRole = await PermissionsRole.destroy({

@@ -14,9 +14,9 @@ const port = process.env.PORT || 3001;
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.engine('ejs', require('ejs').renderFile);
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
+// app.engine('ejs', require('ejs').renderFile);
 
 // const authapi = require('./routes/auth.route.js');
 const auth = require('./routes/auth.js');
@@ -27,6 +27,7 @@ const managementRole = require('./routes/management-user.js');
 const machine = require('./routes/machine.js');
 const categories = require('./routes/categories.js');
 const user = require('./routes/user.js');
+const dashboardAnalytic = require('./routes/dashboard-analytic.js');
 
 // app.use(logger('dev'));
 // app.use(express.json());
@@ -45,7 +46,8 @@ var corsOptions = {
 }
 app.use(cors());
 app.use('/auth', auth);
-app.use('/', dashboard);
+// app.use('/', dashboard);
+app.use('/dashboard', dashboardAnalytic);
 app.use('/user', user);
 app.use('/employee', employee);
 app.use('/product', product);
