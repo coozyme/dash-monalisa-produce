@@ -1,138 +1,55 @@
 const { IssueCategories, Machines, Productions, ProductionsReportDaily, ProductionsReportDailyDetail } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
+const { GetFirstDateAndLastDateOfMonth } = require("../utils/times/datetime");
+const { Op } = require("sequelize");
+const { getColorStatus, getCountPercentageStatusProduction } = require("./helper-analytic");
 
 module.exports = {
-   TotalMachineProduksi: async (req, res) => {
+   TotalProduksiDailyPerMesin: async (req, res) => {
       try {
-         const machines = await Machines.findAll({
+         const produksiHarian = await ProductionsReportDaily.findAll({
             where: {
                deleted_at: null
-            }
+            },
+            include: [
+               {
+                  model: ProductionsReportDailyDetail,
+                  as: 'detail',
+                  attributes: ['id', 'produksi', 'date', 'production_report_daily_id'],
+               },
+               {
+                  model: Machines,
+                  as: 'machine',
+                  attributes: ['id', 'name', 'kode', 'pic_id', 'average_produce', 'status'],
+               }
+            ]
          })
 
-         console.log('LOG-Get-machines', machines)
-         const dataMachines = []
-         machines.forEach(data => {
-
+         const dataResponse = []
+         produksiHarian.forEach(data => {
             const dataObject = {
                id: data.dataValues.id,
-               machineKode: data.dataValues.kode,
-               machineName: data.dataValues.name,
-            }
-
-            dataMachines.push(dataObject)
-         });
-
-         if (dataMachines.length == 0) {
-            res.set('Content-Type', 'application/json')
-            res.status(204).send(Response(false, "204", "Data does not exist", null))
-            return
-         }
-
-
-         const productions = await Productions.findAll({
-            where: {
-               deleted_at: null
-            }
-         })
-
-         console.log('LOG-Get-productions', productions)
-
-         const dataProductions = []
-
-         productions.forEach(data => {
-            const dataObject = {
-               id: data.dataValues.id,
-               orderId: data.dataValues.order_id,
                machineId: data.dataValues.machine_id,
-            }
-
-            dataProductions.push(dataObject)
-         })
-
-         if (dataProductions.length == 0) {
-            res.set('Content-Type', 'application/json')
-            res.status(204).send(Response(false, "204", "Data does not exist", null))
-            return
-         }
-
-         const productionsReportDaily = await ProductionsReportDaily.findAll({
-            where: {
-               deleted_at: null
-            }
-         })
-
-
-         console.log('LOG-Get-productionsReportDaily', productionsReportDaily)
-
-         const dataProductionsReportDaily = []
-
-         productionsReportDaily.forEach(data => {
-            const dataObject = {
-               id: data.dataValues.id,
-               productionId: data.dataValues.production_id,
+               machineName: data.dataValues.machine.name,
+               machineKode: data.dataValues.machine.kode,
+               picId: data.dataValues.machine.pic_id,
+               averageProduce: data.dataValues.machine.average_produce,
+               status: data.dataValues.machine.status,
                date: data.dataValues.date,
-               total: data.dataValues.total,
+               detail: data.dataValues.detail,
             }
-
-            dataProductionsReportDaily.push(dataObject)
-         })
-
-         if (dataProductionsReportDaily.length == 0) {
-            res.set('Content-Type', 'application/json')
-            res.status(204).send(Response(false, "204", "Data does not exist", null))
-            return
-         }
-
-         const dataProductionsReportDailyDetail = []
-
-         const productionsReportDailyDetail = await ProductionsReportDailyDetail.findAll({
-            where: {
-               deleted_at: null
-            }
-         })
-
-         productionsReportDailyDetail.forEach(data => {
-            const dataObject = {
-               id: data.dataValues.id,
-               productionReportDailyId: data.dataValues.report_daily_id,
-               quantity: data.dataValues.quantity,
-               unit: data.dataValues.unit,
-            }
-
-            dataProductionsReportDailyDetail.push(dataObject)
+            dataResponse.push(dataObject)
          });
 
-         console.log('LOG-Get-ProductionsReportDailyDetail', dataProductionsReportDailyDetail)
-
-
-
-         // const dataObjects = []
-
-         // dataMachines.forEach(machine => { 
-         //    const dataObject = {
-         //       id: machine.id,
-         //       machineKode: machine.machineKode,
-         //       machineName: machine.machineName,
-         //       total: 0,
-         //    }
-
-         //    dataProductions.forEach(production => { 
-         //       if (production.machineId == machine.id) { 
-         //          dataProductionsReportDaily.forEach(productionReportDaily => { 
-         //             if (productionReportDaily.productionId == production.id) { 
-         //                dataObject.total += productionReportDaily.total
-         //             }
-         //          })
-         //       }
-         //    })
-
-         //    dataObjects.push(dataObject)
-         // })
+         if (dataResponse.length == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(204).send(Response(false, "204", "Data does not exist", null))
+            return
+         }
 
          res.set('Content-Type', 'application/json')
-         res.status(200).send(Response(true, "200", "Data found", dataObjects))
+         res.status(200).send(Response(true, "200", "Data found", dataResponse))
       } catch (error) {
 
       }
@@ -167,6 +84,93 @@ module.exports = {
 
          res.set('Content-Type', 'application/json')
          res.status(200).send(Response(true, "200", "Data found", dataMachines))
+      } catch (error) {
+         console.log('LOG-er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
+   TotalStatusProduksi: async (req, res) => {
+      try {
+         const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
+         // const status = [
+         //    { status: 'OPEN' },
+         //    { status: 'CLOSED' },
+         //    { status: 'CANCEL' },
+         //    { status: ''}
+         // ]
+
+         const produksi = await Productions.findAll({
+            where: {
+               deleted_at: null,
+               start_date: {
+                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               },
+               end_date: {
+                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               },
+            }
+         })
+
+         console.log('LOG-Get-produksi', produksi)
+         // let dataStatus = 
+         labels = []
+         let countStatusProduksi = []
+         let dataOfDatSet = []
+         let colorStatuData = []
+         const dataResponseStatusProduksi = {
+            dataUnit: "StatusProduction",
+            legend: false,
+            datasets: [
+               {
+                  borderColor: "#fff",
+                  backgroundColor: colorStatuData,
+                  data: dataOfDatSet,
+               },
+            ],
+            startDate: dateRangeMonth.firstDate.toDateString(),
+            endDate: dateRangeMonth.lastDate.toDateString(),
+            dataView: countStatusProduksi,
+            totalData: produksi.length,
+         }
+
+         produksi.forEach(data => {
+            const { status, color } = getColorStatus(data.status)
+            console.log('LOG-status', status)
+            const dataObject = {
+               status: status,
+               count: 1,
+               percent: 0,
+               color: color,
+            }
+
+            const findStatus = countStatusProduksi.find((data) => { return data.status == dataObject.status })
+            console.log('LOG-findStatus--1', findStatus)
+            if (findStatus) {
+
+               findStatus.count += 1
+               findStatus.percent = getCountPercentageStatusProduction(produksi.length, findStatus.count)
+            } else {
+               countStatusProduksi.push(dataObject)
+               dataObject.percent = getCountPercentageStatusProduction(produksi.length, dataObject.count)
+            }
+
+         });
+
+         if (countStatusProduksi.length == 0) {
+            res.set('Content-Type', 'application/json')
+            res.status(204).send(Response(false, "204", "Data does not exist", null))
+            return
+         }
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Data found", dataResponseStatusProduksi))
       } catch (error) {
          console.log('LOG-er', error)
          msg = error.errors?.map(e => e.message)[0]

@@ -24,6 +24,18 @@ function ConvertDateTimeUTC(tm) {
    // return day + '/' + month + '/' + year + ' ' + hour + ':' + minute;
    return dta + ' ' + tme;
 }
+
+function GetFirstDateAndLastDateOfMonth() {
+   var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+   var firstDate = new Date(y, m, 1);
+   var lastDate = new Date(y, m + 1, 0);
+
+   return {
+      firstDate,
+      lastDate
+   }
+}
 module.exports = {
-   ConvertDateTimeUTC
+   ConvertDateTimeUTC,
+   GetFirstDateAndLastDateOfMonth
 };
