@@ -28,40 +28,15 @@ const getColorStatus = (statusColor) => {
          return data;
       case 'CANCEL':
          data.status = status
-         data.color = '#6e819a'
+         data.color = '#b8acff'
          return data;
       case 'ON_HOLD':
-         data.status = status
-         data.color = '#6e819a'
+         data.status = 'ON HOLD'
+         data.color = '#f9db7b'
          return data;
       default:
          return data;
    }
-   // if (status == 'OPEN') {
-   //    data.status = status
-   //    data.color = '#d1d3d4'
-   //    return data
-   // } else if (status == 'PROCCESS') {
-   //    data.status = status
-   //    data.color = '#6495ED'
-   //    return data;
-   // } else if (status == 'FINISH') {
-   //    data.status = status
-   //    data.color = '#02e00c'
-   //    return data;
-   // } else if (status == 'CLOSED') {
-   //    data.status = status
-   //    data.color = '#6e819a'
-   //    return data;
-   // } else if (status == 'CANCEL') {
-   //    data.status = status
-   //    data.color = '#6e819a'
-   //    return data;
-   // } else if (status == 'ON_HOLD') {
-   //    data.status = status
-   //    data.color = '#6e819a'
-   //    return data;
-   // }
 }
 
 module.exports = {

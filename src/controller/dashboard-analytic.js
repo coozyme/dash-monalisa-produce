@@ -99,12 +99,7 @@ module.exports = {
    TotalStatusProduksi: async (req, res) => {
       try {
          const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
-         // const status = [
-         //    { status: 'OPEN' },
-         //    { status: 'CLOSED' },
-         //    { status: 'CANCEL' },
-         //    { status: ''}
-         // ]
+
 
          const produksi = await Productions.findAll({
             where: {
@@ -119,18 +114,17 @@ module.exports = {
          })
 
          console.log('LOG-Get-produksi', produksi)
-         // let dataStatus = 
          labels = []
          let countStatusProduksi = []
          let dataOfDatSet = []
-         let colorStatuData = []
+         let colorStatusData = []
          const dataResponseStatusProduksi = {
             dataUnit: "StatusProduction",
             legend: false,
             datasets: [
                {
                   borderColor: "#fff",
-                  backgroundColor: colorStatuData,
+                  backgroundColor: colorStatusData,
                   data: dataOfDatSet,
                },
             ],
@@ -163,11 +157,11 @@ module.exports = {
 
          });
 
-         if (countStatusProduksi.length == 0) {
-            res.set('Content-Type', 'application/json')
-            res.status(204).send(Response(false, "204", "Data does not exist", null))
-            return
-         }
+         countStatusProduksi.forEach(data => {
+            colorStatusData.push(data.color)
+            dataOfDatSet.push(data.count)
+         })
+
 
          res.set('Content-Type', 'application/json')
          res.status(200).send(Response(true, "200", "Data found", dataResponseStatusProduksi))
