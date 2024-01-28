@@ -1,5 +1,5 @@
-const getCountPercentageStatusProduction = (totalDataProduction, totalDataStatus) => {
-   const percentage = (totalDataStatus / totalDataProduction) * 100;
+const getCountPercentageStatusProduction = (totalDataProduction, totalData) => {
+   const percentage = (totalData / totalDataProduction) * 100;
    return `${percentage?.toFixed(2)}%`;
 }
 

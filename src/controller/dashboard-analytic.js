@@ -4,6 +4,7 @@ const { TimeZoneIndonesia } = require("../utils/times/timezone");
 const { GetFirstDateAndLastDateOfMonth } = require("../utils/times/datetime");
 const { Op } = require("sequelize");
 const { getColorStatus, getCountPercentageStatusProduction } = require("./helper-analytic");
+const { generateNewColor } = require("../utils/color/generate");
 
 module.exports = {
    TotalProduksiDailyPerMesin: async (req, res) => {
@@ -176,5 +177,92 @@ module.exports = {
          res.set('Content-Type', 'application/json')
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
-   }
+   },
+   IssueProduksi: async (req, res) => {
+      try {
+         const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
+
+         const produksiDaily = await ProductionsReportDaily.findAll({
+            where: {
+               deleted_at: null,
+               issue_id: {
+                  [Op.not]: null
+               },
+               production_date: {
+                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               },
+            },
+            include: [
+               {
+                  model: IssueCategories,
+                  as: 'issue',
+                  attributes: ['id', 'name_issue'],
+               }
+            ]
+         })
+
+         console.log('LOG-Get-produksiDaily', produksiDaily)
+         labels = []
+         let countIssueProduksi = []
+         let dataOfDatSet = []
+         let colorIssueData = []
+         const dataResponseIssueProduksi = {
+            dataUnit: "StatusProduction",
+            legend: false,
+            datasets: [
+               {
+                  borderColor: "#fff",
+                  backgroundColor: colorIssueData,
+                  data: dataOfDatSet,
+               },
+            ],
+            startDate: dateRangeMonth.firstDate.toDateString(),
+            endDate: dateRangeMonth.lastDate.toDateString(),
+            dataView: countIssueProduksi,
+            totalData: produksiDaily.length,
+         }
+
+         produksiDaily.forEach(data => {
+            // const { status, color } = getColorStatus(data.status)
+            // console.log('LOG-status', status)
+            const dataObject = {
+               issue: data.issue.name_issue,
+               count: 1,
+               percent: 0,
+               color: generateNewColor(),
+            }
+
+            const findStatus = countIssueProduksi.find((data) => { return data.status == dataObject.status })
+            console.log('LOG-findStatus--1', findStatus)
+            if (findStatus) {
+
+               findStatus.count += 1
+               findStatus.percent = getCountPercentageStatusProduction(produksiDaily.length, findStatus.count)
+            } else {
+               countIssueProduksi.push(dataObject)
+               dataObject.percent = getCountPercentageStatusProduction(produksiDaily.length, dataObject.count)
+            }
+
+         });
+
+         countIssueProduksi.forEach(data => {
+            colorIssueData.push(data.color)
+            dataOfDatSet.push(data.count)
+         })
+
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Data found", dataResponseIssueProduksi))
+      } catch (error) {
+         console.log('LOG-er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
 }
