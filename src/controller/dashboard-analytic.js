@@ -265,4 +265,38 @@ module.exports = {
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
    },
+   OrderProduksiAnalytic: async (req, res) => {
+
+   },
+   TotalOrderProduksi: async (req, res) => {
+      try {
+         const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
+
+
+         const orderProduksi = await Productions.count({
+            where: {
+               deleted_at: null,
+               start_date: {
+                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               },
+               end_date: {
+                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               },
+            }
+         })
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Data found", orderProduksi))
+      } catch (error) {
+         console.log('LOG-er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   }
 }
