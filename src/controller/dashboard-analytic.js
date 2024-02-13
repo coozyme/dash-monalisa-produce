@@ -266,27 +266,79 @@ module.exports = {
       }
    },
    OrderProduksiAnalytic: async (req, res) => {
-
    },
-   TotalOrderProduksi: async (req, res) => {
+   StatusChecklistApproval: async (req, res) => {
       try {
          const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
 
 
-         const orderProduksi = await Productions.count({
+         const checklistApproved = await ProductionsReportDaily.count({
             where: {
                deleted_at: null,
-               start_date: {
-                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
-               },
-               end_date: {
-                  [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
-               },
-            }
+               // start_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+               // end_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+               // checklist_approved: true
+            },
+            include: [
+               {
+                  model: Productions,
+                  as: 'production',
+                  attributes: ['id', 'produksi', 'date', 'production_report_daily_id'],
+                  where: {
+                     deleted_at: null,
+                     start_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     },
+                     end_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     }
+                  },
+               }
+            ]
          })
 
+         const checklistNotApproved = await ProductionsReportDaily.count({
+            where: {
+               deleted_at: null,
+               // start_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+               // end_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+
+               checklist_approved: true
+            },
+            include: [
+               {
+                  model: Productions,
+                  as: 'production',
+                  attributes: ['id', 'produksi', 'date', 'production_report_daily_id'],
+                  where: {
+                     deleted_at: null,
+                     start_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     },
+                     end_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     }
+                  },
+               }
+            ]
+         })
+
+         const dataResponse = {
+            approved: checklistApproved,
+            notApproved: checklistNotApproved,
+            dateRange: `${dateRangeMonth.firstDate.toDateString()} - ${dateRangeMonth.lastDate.toDateString()}`,
+         }
+
          res.set('Content-Type', 'application/json')
-         res.status(200).send(Response(true, "200", "Data found", orderProduksi))
+         res.status(200).send(Response(true, "200", "Data found", dataResponse))
       } catch (error) {
          console.log('LOG-er', error)
          msg = error.errors?.map(e => e.message)[0]
@@ -298,5 +350,5 @@ module.exports = {
          res.set('Content-Type', 'application/json')
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
-   }
+   },
 }
