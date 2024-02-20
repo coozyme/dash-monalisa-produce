@@ -222,6 +222,7 @@ module.exports = {
             totalData: produksiDaily.length,
          }
 
+
          produksiDaily.forEach(data => {
             // const { status, color } = getColorStatus(data.status)
             // console.log('LOG-status', status)
@@ -231,8 +232,9 @@ module.exports = {
                percent: 0,
                color: generateNewColor(),
             }
+            // console.log('LOG-DDD', data, dataObject.status)
 
-            const findStatus = countIssueProduksi.find((data) => { return data.status == dataObject.status })
+            const findStatus = countIssueProduksi.find((data) => { return data.issue === dataObject.issue })
             console.log('LOG-findStatus--1', findStatus)
             if (findStatus) {
 
@@ -271,6 +273,33 @@ module.exports = {
       try {
          const dateRangeMonth = GetFirstDateAndLastDateOfMonth()
 
+         const totalChecklist = await ProductionsReportDaily.count({
+            where: {
+               deleted_at: null,
+               // start_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+               // end_date: {
+               //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+               // },
+            },
+            include: [
+               {
+                  model: Productions,
+                  as: 'production',
+                  attributes: ['id', 'produksi', 'date', 'production_report_daily_id'],
+                  where: {
+                     deleted_at: null,
+                     start_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     },
+                     end_date: {
+                        [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
+                     }
+                  },
+               }
+            ]
+         })
 
          const checklistApproved = await ProductionsReportDaily.count({
             where: {
@@ -281,7 +310,7 @@ module.exports = {
                // end_date: {
                //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
                // },
-               // checklist_approved: true
+               checklist_approved: true
             },
             include: [
                {
@@ -311,7 +340,7 @@ module.exports = {
                //    [Op.between]: [dateRangeMonth.firstDate, dateRangeMonth.lastDate]
                // },
 
-               checklist_approved: true
+               checklist_approved: false
             },
             include: [
                {
@@ -334,6 +363,7 @@ module.exports = {
          const dataResponse = {
             approved: checklistApproved,
             notApproved: checklistNotApproved,
+            totalChecklistApproval: totalChecklist,
             dateRange: `${dateRangeMonth.firstDate.toDateString()} - ${dateRangeMonth.lastDate.toDateString()}`,
          }
 
