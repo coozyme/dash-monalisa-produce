@@ -53,4 +53,14 @@ const ConvertToMeter = (unit, quantity) => {
       return quantity
    }
 }
-module.exports = { ConvertToMeter, CalculateMaterialProduction }
+
+function PercentageCalcuate(newValue, oldValue) {
+   const calculate = ((newValue - oldValue) / oldValue) * 100;
+   return Math.abs(calculate).toFixed(2);
+}
+
+module.exports = {
+   ConvertToMeter,
+   CalculateMaterialProduction,
+   PercentageCalcuate
+}

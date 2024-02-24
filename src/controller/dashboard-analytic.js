@@ -1,10 +1,11 @@
 const { IssueCategories, Machines, Productions, ProductionsReportDaily, ProductionsReportDailyDetail } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
-const { GetFirstDateAndLastDateOfMonth } = require("../utils/times/datetime");
+const { GetFirstDateAndLastDateOfMonth, GetFirstAndLastDatesPerMonthOfYear } = require("../utils/times/datetime");
 const { Op } = require("sequelize");
 const { getColorStatus, getCountPercentageStatusProduction } = require("./helper-analytic");
 const { generateNewColor } = require("../utils/color/generate");
+const { PercentageCalcuate } = require("../utils/calculation/calculation");
 
 module.exports = {
    TotalProduksiDailyPerMesin: async (req, res) => {
@@ -381,4 +382,70 @@ module.exports = {
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
    },
+   OrderProduksiOverview: async (req, res) => {
+      try {
+         const dateRangeMonths = GetFirstAndLastDatesPerMonthOfYear()
+
+         const dataResponse = {
+            total: 0,
+            percentage: "",
+            isUp: false,
+            labels: [],
+            dataUnit: "Quantity",
+            stacked: true,
+            datasets: [
+               {
+                  label: "Order Produksi",
+                  barPercentage: 0.7,
+                  categoryPercentage: 0.7,
+                  backgroundColor: [],
+                  data: [],
+               },
+            ],
+         }
+
+         for (let i = 0; i < dateRangeMonths.length; i++) {
+            const produksi = await Productions.count({
+               where: {
+                  deleted_at: null,
+                  start_date: {
+                     [Op.between]: [dateRangeMonths[i].firstDate, dateRangeMonths[i].lastDate]
+                  },
+                  end_date: {
+                     [Op.between]: [dateRangeMonths[i].firstDate, dateRangeMonths[i].lastDate]
+                  },
+               }
+            })
+            dataResponse.total += produksi
+            dataResponse.labels.push(dateRangeMonths[i].month)
+            dataResponse.datasets[0].data.push(`${produksi}`)
+            color = i + 1 != dateRangeMonths.length ? "rgba(133, 79, 255, 0.2)" : "rgba(133, 79, 255, 1)"
+            dataResponse.datasets[0].backgroundColor.push(color)
+         }
+
+         const dataCounts = dataResponse.datasets[0].data
+
+         const oldValue = dataCounts[dataCounts.length - 2]
+         const newValue = dataCounts[dataCounts.length - 1]
+
+         console.log('LOFF-', oldValue)
+         console.log('LOF2-', newValue)
+
+         dataResponse.percentage = PercentageCalcuate(oldValue, newValue)
+         dataResponse.isUp = newValue > oldValue
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Data found", dataResponse))
+      } catch (error) {
+         console.log('LOG-er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   }
 }
