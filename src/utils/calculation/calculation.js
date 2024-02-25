@@ -54,7 +54,7 @@ const ConvertToMeter = (unit, quantity) => {
    }
 }
 
-function PercentageCalcuate(newValue, oldValue) {
+function PercentageCalcuate(oldValue, newValue) {
    const calculate = ((newValue - oldValue) / oldValue) * 100;
    return Math.abs(calculate).toFixed(2);
 }

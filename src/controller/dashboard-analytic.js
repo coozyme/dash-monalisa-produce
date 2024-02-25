@@ -1,7 +1,7 @@
 const { IssueCategories, Machines, Productions, ProductionsReportDaily, ProductionsReportDailyDetail } = require("../models");
 const { Response } = require("../utils/response/response");
 const { TimeZoneIndonesia } = require("../utils/times/timezone");
-const { GetFirstDateAndLastDateOfMonth, GetFirstAndLastDatesPerMonthOfYear } = require("../utils/times/datetime");
+const { GetFirstDateAndLastDateOfMonth, GetFirstAndLastDatesPerMonthOfYear, GetWeekdayDates, GetThisMonthAndYear } = require("../utils/times/datetime");
 const { Op } = require("sequelize");
 const { getColorStatus, getCountPercentageStatusProduction } = require("./helper-analytic");
 const { generateNewColor } = require("../utils/color/generate");
@@ -202,7 +202,6 @@ module.exports = {
             ]
          })
 
-         console.log('LOG-Get-produksiDaily', produksiDaily)
          labels = []
          let countIssueProduksi = []
          let dataOfDatSet = []
@@ -236,9 +235,7 @@ module.exports = {
             // console.log('LOG-DDD', data, dataObject.status)
 
             const findStatus = countIssueProduksi.find((data) => { return data.issue === dataObject.issue })
-            console.log('LOG-findStatus--1', findStatus)
             if (findStatus) {
-
                findStatus.count += 1
                findStatus.percent = getCountPercentageStatusProduction(produksiDaily.length, findStatus.count)
             } else {
@@ -395,7 +392,7 @@ module.exports = {
             stacked: true,
             datasets: [
                {
-                  label: "Order Produksi",
+                  label: "Total",
                   barPercentage: 0.7,
                   categoryPercentage: 0.7,
                   backgroundColor: [],
@@ -403,7 +400,7 @@ module.exports = {
                },
             ],
          }
-
+         // console.log('LOG-dateRangeMonths', dateRangeMonths)
          for (let i = 0; i < dateRangeMonths.length; i++) {
             const produksi = await Productions.count({
                where: {
@@ -418,18 +415,19 @@ module.exports = {
             })
             dataResponse.total += produksi
             dataResponse.labels.push(dateRangeMonths[i].month)
-            dataResponse.datasets[0].data.push(`${produksi}`)
+            dataResponse.datasets[0].data.push(produksi)
             color = i + 1 != dateRangeMonths.length ? "rgba(133, 79, 255, 0.2)" : "rgba(133, 79, 255, 1)"
             dataResponse.datasets[0].backgroundColor.push(color)
          }
 
-         const dataCounts = dataResponse.datasets[0].data
+         const dataCounts = dataResponse?.datasets[0]?.data
 
-         const oldValue = dataCounts[dataCounts.length - 2]
-         const newValue = dataCounts[dataCounts.length - 1]
+         const oldValue = dataCounts[dataCounts?.length - 2]
+         const newValue = dataCounts[dataCounts?.length - 1]
 
-         console.log('LOFF-', oldValue)
-         console.log('LOF2-', newValue)
+         console.log('LOFF-', typeof oldValue)
+         console.log('LOF2-', typeof newValue)
+         console.log('LOF3-', newValue > oldValue)
 
          dataResponse.percentage = PercentageCalcuate(oldValue, newValue)
          dataResponse.isUp = newValue > oldValue
@@ -447,5 +445,83 @@ module.exports = {
          res.set('Content-Type', 'application/json')
          res.status(500).send(Response(false, "500", "Internal Server Error", null))
       }
-   }
+   },
+   IssueProduksiOverview: async (req, res) => {
+      try {
+         const dateRangeMonths = GetFirstAndLastDatesPerMonthOfYear()
+
+         const dataResponse = {
+            total: 0,
+            percentage: "",
+            isUp: false,
+            labels: [],
+            dataUnit: "Quantity",
+            stacked: true,
+            datasets: [
+               {
+                  label: "Total",
+                  barPercentage: 0.7,
+                  categoryPercentage: 0.7,
+                  backgroundColor: [],
+                  data: [],
+               },
+            ],
+         }
+
+         for (let i = 0; i < dateRangeMonths.length; i++) {
+            const produksi = await ProductionsReportDaily.count({
+               where: {
+                  deleted_at: null,
+                  issue_id: {
+                     [Op.not]: null,
+                  },
+                  production_date: {
+                     [Op.between]: [dateRangeMonths[i].firstDate, dateRangeMonths[i].lastDate]
+                  }
+               },
+               include: [
+                  {
+                     model: Productions,
+                     as: "production",
+                     attributes: ['id', 'start_date', 'end_date'],
+                     where: {
+                        deleted_at: null,
+                     }
+                  },
+               ]
+            })
+
+            dataResponse.total += produksi
+            dataResponse.labels.push(dateRangeMonths[i].month)
+            dataResponse.datasets[0].data.push(produksi)
+            color = i + 1 != dateRangeMonths.length ? "rgba(133, 79, 255, 0.2)" : "rgba(133, 79, 255, 1)"
+            dataResponse.datasets[0].backgroundColor.push(color)
+         }
+
+         const dataCounts = dataResponse?.datasets[0]?.data
+
+         const oldValue = dataCounts[dataCounts?.length - 2]
+         const newValue = dataCounts[dataCounts?.length - 1]
+
+         console.log('LOFF-', typeof oldValue)
+         console.log('LOF2-', typeof newValue)
+         console.log('LOF3-', newValue > oldValue)
+
+         dataResponse.percentage = PercentageCalcuate(oldValue, newValue)
+         dataResponse.isUp = newValue > oldValue
+
+         res.set('Content-Type', 'application/json')
+         res.status(200).send(Response(true, "200", "Data found", dataResponse))
+      } catch (error) {
+         console.log('LOG-er', error)
+         msg = error.errors?.map(e => e.message)[0]
+         if (error.name == "SequelizeUniqueConstraintError") {
+            res.set('Content-Type', 'application/json')
+            res.status(409).send(Response(false, "409", msg, null))
+            return
+         }
+         res.set('Content-Type', 'application/json')
+         res.status(500).send(Response(false, "500", "Internal Server Error", null))
+      }
+   },
 }

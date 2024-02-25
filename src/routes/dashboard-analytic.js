@@ -6,6 +6,7 @@ const {
    IssueProduksi,
    StatusChecklistApproval,
    OrderProduksiOverview,
+   IssueProduksiOverview,
 } = require('../controller/dashboard-analytic')
 
 // const { isLoginAdmin } = require('../middleware/auth')
@@ -17,6 +18,7 @@ router.get('/status-productions', TotalStatusProduksi);
 router.get('/issue-productions', IssueProduksi);
 router.get('/total-status-checklist-approval', StatusChecklistApproval);
 router.get('/order-produksi-overview', OrderProduksiOverview);
+router.get('/issue-produksi-overview', IssueProduksiOverview);
 // router.post('/regist', Register);
 // router.get('/generate-password', GeneratePassword);
 // router.post('/change-password', ChangePassword);

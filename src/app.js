@@ -20,7 +20,6 @@ var app = express();
 
 // const authapi = require('./routes/auth.route.js');
 const auth = require('./routes/auth.js');
-const dashboard = require('./routes/dashboard.js');
 const employee = require('./routes/employee.js');
 const product = require('./routes/productions.js');
 const managementRole = require('./routes/management-user.js');
