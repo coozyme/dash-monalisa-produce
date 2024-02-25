@@ -63,6 +63,7 @@ function GetFirstAndLastDatesPerMonthOfYear() {
       datesPerMonth.push(
          {
             month: monthName,
+            year: currentYear,
             firstDate: firstDate.toLocaleDateString(),
             lastDate: lastDate.toLocaleDateString()
          });

@@ -386,6 +386,7 @@ module.exports = {
          const dataResponse = {
             total: 0,
             percentage: "",
+            year: "",
             isUp: false,
             labels: [],
             dataUnit: "Quantity",
@@ -414,6 +415,7 @@ module.exports = {
                }
             })
             dataResponse.total += produksi
+            dataResponse.year = dateRangeMonths[i].year
             dataResponse.labels.push(dateRangeMonths[i].month)
             dataResponse.datasets[0].data.push(produksi)
             color = i + 1 != dateRangeMonths.length ? "rgba(133, 79, 255, 0.2)" : "rgba(133, 79, 255, 1)"
@@ -453,6 +455,7 @@ module.exports = {
          const dataResponse = {
             total: 0,
             percentage: "",
+            year: "",
             isUp: false,
             labels: [],
             dataUnit: "Quantity",
@@ -493,6 +496,7 @@ module.exports = {
 
             dataResponse.total += produksi
             dataResponse.labels.push(dateRangeMonths[i].month)
+            dataResponse.year = dateRangeMonths[i].year
             dataResponse.datasets[0].data.push(produksi)
             color = i + 1 != dateRangeMonths.length ? "rgba(133, 79, 255, 0.2)" : "rgba(133, 79, 255, 1)"
             dataResponse.datasets[0].backgroundColor.push(color)
